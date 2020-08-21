@@ -1,0 +1,53 @@
+version: "3.8"
+services:
+  # GERENCIADOR DE CONTAINERS
+  portainer:
+    image: portainer/portainer:latest
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainerdata:/data
+    networks:
+      - backend
+
+  # BACKEND
+  backend:
+    build: .
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+
+  # MONGO
+  mongo:
+    image: mongo:latest
+    volumes:
+      - database:/data
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASS}
+    networks:
+      - backend
+
+  # MONGO-EXPRESS
+  mongo-express:
+    image: mongo-express:latest
+    ports:
+      - 8080:8080
+    networks:
+      - backend
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: ${ME_USER}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${ME_PASS}
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_PASS}
+    depends_on:
+      - mongo
+
+networks:
+  backend:
+
+volumes:
+  portainerdata:
+  database:

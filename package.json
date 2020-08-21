@@ -4,11 +4,16 @@
   "description": "Template-API-Javascript",
   "main": "start.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node start.js"
   },
   "author": "Henrique Bonfim",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.24"
+  },
   "devDependencies": {
     "jest": "^26.1.0"
   }
